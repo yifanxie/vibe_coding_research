@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indicator Research PoC</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Research App</p>
+          <h1>Indicator Research PoC and Evaluation Workbench</h1>
+          <p class="subtitle">
+            A side-by-side experiment for evaluating TradingView embedding versus
+            dashboard-native indicator extraction before integrating into the
+            Macro &amp; Tech Intelligent Dashboard.
+          </p>
+        </div>
+        <div class="hero-card">
+          <p class="hero-card-label">Recommended Direction</p>
+          <strong>Dashboard-owned values first</strong>
+          <span>
+            Use visual embeds for rapid evaluation, but keep metric extraction
+            and persistence under app control.
+          </span>
+        </div>
+      </header>
+
+      <nav class="tab-bar" aria-label="Research sections">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="widget">TradingView Widget PoC</button>
+        <button class="tab" data-tab="native">Dashboard-Native PoC</button>
+        <button class="tab" data-tab="evaluation">Evaluation</button>
+      </nav>
+
+      <main>
+        <section class="panel active" id="tab-overview">
+          <div class="grid two-up">
+            <article class="card">
+              <h2>What this PoC covers</h2>
+              <ul>
+                <li>Embeddable TradingView Advanced Chart exploration</li>
+                <li>Dashboard-native metric extraction with Alpha Vantage benchmark data</li>
+                <li>Indicator calculation examples for SMA, EMA, and RSI</li>
+                <li>Evaluation notes and decision criteria saved locally</li>
+              </ul>
+            </article>
+            <article class="card accent-card">
+              <h2>How to use this experiment</h2>
+              <ol>
+                <li>Start with the widget tab to test visual embedding.</li>
+                <li>Move to the dashboard-native tab to inspect extracted values.</li>
+                <li>Record feasibility notes and recommendations in the evaluation tab.</li>
+              </ol>
+            </article>
+          </div>
+
+          <div class="grid option-grid">
+            <article class="option-card">
+              <p class="option-label">Option A</p>
+              <h3>TradingView widget</h3>
+              <p>
+                Best for quick chart rendering, chart-type switching, and visual
+                studies evaluation with minimal local code.
+              </p>
+              <ul>
+                <li>Fastest proof of concept</li>
+                <li>Good for layout and chart interaction testing</li>
+                <li>Weakest path for dashboard-owned metric extraction</li>
+              </ul>
+            </article>
+            <article class="option-card">
+              <p class="option-label">Option B</p>
+              <h3>Dashboard-native chart + data pipeline</h3>
+              <p>
+                Best for values that need to appear in your own dashboard fields,
+                persistence model, and future automation workflows.
+              </p>
+              <ul>
+                <li>Supports explicit metric snapshots</li>
+                <li>Lets the app own calculations and refresh rules</li>
+                <li>Requires an external market-data source in a future build</li>
+              </ul>
+            </article>
+            <article class="option-card">
+              <p class="option-label">Option C</p>
+              <h3>Charting Library</h3>
+              <p>
+                Most control, but heavier licensing, datafeed, and integration
+                requirements. Keep as a deeper investigation track.
+              </p>
+              <ul>
+                <li>Rich chart control and overlays</li>
+                <li>Likely highest setup and governance cost</li>
+                <li>Not required for first evaluation pass</li>
+              </ul>
+            </article>
+          </div>
+
+          <article class="card">
+            <h2>Integration seam in the existing dashboard</h2>
+            <p>
+              The first implementation target should be the expanded macro
+              indicator detail view, which already exists in the dashboard. This
+              experiment mirrors that detail-module approach instead of proposing
+              a separate production route.
+            </p>
+            <div class="chip-row">
+              <span class="chip">Macro detail module</span>
+              <span class="chip">Type additions</span>
+              <span class="chip">Store updates</span>
+              <span class="chip">Refresh workflow</span>
+              <span class="chip">Persistence decision</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel" id="tab-widget">
+          <div class="grid controls-layout">
+            <article class="card control-card">
+              <h2>TradingView widget controls</h2>
+              <p class="muted">
+                Use this pane to assess visual integration speed and layout fit.
+              </p>
+              <div class="field-grid">
+                <label>
+                  Primary symbol
+                  <input id="tv-symbol" type="text" value="BINANCE:BTCUSDT" />
+                </label>
+                <label>
+                  Interval
+                  <select id="tv-interval">
+                    <option value="1D" selected>1D</option>
+                    <option value="1W">1W</option>
+                    <option value="1M">1M</option>
+                  </select>
+                </label>
+                <label>
+                  Chart type
+                  <select id="tv-style">
+                    <option value="1" selected>Candles</option>
+                    <option value="2">Bars</option>
+                    <option value="3">Line</option>
+                    <option value="4">Area</option>
+                  </select>
+                </label>
+                <label>
+                  Theme
+                  <select id="tv-theme">
+                    <option value="light" selected>Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </label>
+                <label class="full-width">
+                  Studies preset
+                  <select id="tv-study-preset">
+                    <option value="none" selected>None</option>
+                    <option value="trend">EMA 20 + EMA 50</option>
+                    <option value="momentum">RSI + MACD</option>
+                    <option value="volatility">Bollinger Bands</option>
+                  </select>
+                </label>
+                <label class="checkbox-row full-width">
+                  <input id="tv-allow-symbol-change" type="checkbox" checked />
+                  Allow symbol change inside widget
+                </label>
+              </div>
+              <div class="button-row">
+                <button id="tv-render" class="primary-button">Render widget</button>
+                <button id="tv-reset" class="secondary-button">Reset presets</button>
+              </div>
+            </article>
+            <article class="card status-card">
+              <h2>Widget research notes</h2>
+              <ul>
+                <li>Best suited to visual proof of concept and layout validation.</li>
+                <li>Study selection is supported at render time through widget config.</li>
+                <li>Do not treat widget rendering as proof of dashboard-owned metric extraction.</li>
+                <li>If the chart does not load, check network access to TradingView script hosts.</li>
+              </ul>
+              <div class="status-block warning">
+                <strong>Important:</strong>
+                <span>
+                  This tab intentionally does not claim ownership of structured
+                  indicator values. That capability is evaluated in the
+                  dashboard-native tab.
+                </span>
+              </div>
+              <pre id="tv-config-preview" class="code-preview"></pre>
+            </article>
+          </div>
+
+          <article class="card widget-card">
+            <div class="widget-header">
+              <div>
+                <h2>Widget preview</h2>
+                <p class="muted">
+                  Advanced Chart widget rendered with the selected settings.
+                </p>
+              </div>
+              <span class="badge">Visual integration track</span>
+            </div>
+            <div id="tv-widget-root" class="widget-root"></div>
+          </article>
+        </section>
+
+        <section class="panel" id="tab-native">
+          <div class="grid controls-layout">
+            <article class="card control-card">
+              <h2>Dashboard-native controls</h2>
+              <p class="muted">
+                This uses Alpha Vantage-backed benchmark history plus latest
+                spot snapshots, while keeping the extracted values owned by the
+                app.
+              </p>
+              <div class="field-grid">
+                <label>
+                  Primary asset
+                  <select id="native-symbol"></select>
+                </label>
+                <label>
+                  Compare overlay
+                  <select id="native-compare" disabled></select>
+                </label>
+                <label>
+                  Window
+                  <select id="native-window">
+                    <option value="30">30 days</option>
+                    <option value="90" selected>90 days</option>
+                    <option value="182">6 months</option>
+                    <option value="365">1 year</option>
+                    <option value="1825">5 years</option>
+                    <option value="3650">10 years</option>
+                    <option value="10950">30 years</option>
+                    <option value="18250">50 years</option>
+                  </select>
+                </label>
+                <label>
+                  Chart style
+                  <select id="native-style">
+                    <option value="line" selected>Line</option>
+                    <option value="area">Area</option>
+                  </select>
+                </label>
+              </div>
+              <div class="toggle-group" id="indicator-toggles"></div>
+              <div class="button-row">
+                <button id="native-refresh" class="primary-button">Refresh snapshots</button>
+              </div>
+            </article>
+            <article class="card status-card">
+              <h2>Snapshot output</h2>
+              <div id="snapshot-metrics" class="metric-grid"></div>
+              <div class="status-block success">
+                <strong>PoC goal:</strong>
+                <span>
+                  Demonstrate how Alpha Vantage history and spot values for gold,
+                  BTC, the S&amp;P 500 proxy, and the US 10Y yield can be exposed
+                  as dashboard-owned fields.
+                </span>
+              </div>
+            </article>
+          </div>
+
+          <article class="card chart-card">
+            <div class="widget-header">
+              <div>
+                <h2>Native chart preview</h2>
+                <p class="muted">
+                  A lightweight SVG chart driven by Alpha Vantage gold history
+                  and local indicator calculations.
+                </p>
+              </div>
+              <span class="badge secondary">Dashboard-owned values track</span>
+            </div>
+            <div id="native-chart-root" class="native-chart-root"></div>
+          </article>
+
+          <div class="grid two-up native-lower-grid">
+            <article class="card">
+              <h2>Snapshot payload preview</h2>
+              <pre id="snapshot-json" class="code-preview"></pre>
+            </article>
+            <article class="card">
+              <h2>Integration mapping</h2>
+              <ul>
+                <li><strong>Chart config:</strong> symbol, compare overlay, window, style, studies</li>
+                <li><strong>Snapshot values:</strong> latest price, change, SMA, EMA, RSI</li>
+                <li><strong>Future persistence choice:</strong> runtime-only or saved into dashboard data</li>
+                <li><strong>Future home:</strong> expanded macro detail module in the existing dashboard</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="tab-evaluation">
+          <div class="grid two-up">
+            <article class="card">
+              <h2>Decision matrix</h2>
+              <div id="evaluation-matrix"></div>
+            </article>
+            <article class="card">
+              <h2>Evaluation notes</h2>
+              <p class="muted">
+                Saved locally in your browser via <code>localStorage</code>.
+              </p>
+              <label class="full-width">
+                Research notes
+                <textarea id="evaluation-notes" rows="14" placeholder="Record layout fit, extraction feasibility, licensing questions, and next-step recommendations..."></textarea>
+              </label>
+              <div class="button-row">
+                <button id="save-notes" class="primary-button">Save notes</button>
+                <button id="clear-notes" class="secondary-button">Clear notes</button>
+              </div>
+            </article>
+          </div>
+
+          <article class="card checklist-card">
+            <h2>Evaluation checklist</h2>
+            <div id="evaluation-checklist" class="checklist"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
