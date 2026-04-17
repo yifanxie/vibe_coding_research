@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OCR Model Pilot</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Private AI OCR Pilot</p>
+          <h1>Portable OCR Model Workspace</h1>
+          <p class="subcopy">
+            Pick an OCR model, download it into a reusable location, mark it as loaded,
+            upload a scanned PDF or image, and inspect the original file beside Markdown output.
+          </p>
+        </div>
+        <div class="status-card">
+          <div class="status-row">
+            <span>Selected model</span>
+            <strong id="modelName">PaddleOCR-VL-1.5</strong>
+          </div>
+          <div class="status-row">
+            <span>Download</span>
+            <strong id="downloadStatus">Idle</strong>
+          </div>
+          <div class="status-row">
+            <span>Load state</span>
+            <strong id="loadStatus">Not loaded</strong>
+          </div>
+          <div class="status-row">
+            <span>OCR backend</span>
+            <strong id="backendStatus">macos-vision-dev</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls">
+        <label class="model-picker">
+          <span>OCR model</span>
+          <select id="modelSelect"></select>
+        </label>
+        <button id="downloadBtn" class="primary">Download Selected Model</button>
+        <button id="loadBtn" class="secondary">Load Selected Model</button>
+        <label class="upload-button">
+          <input id="fileInput" type="file" accept=".pdf,image/*">
+          <span>Upload PDF or image</span>
+        </label>
+      </section>
+
+      <section class="download-panel">
+        <article class="download-card">
+          <div class="download-meta">
+            <h2 id="downloadPanelTitle">Model Download</h2>
+            <p id="downloadPanelDescription">
+              Choose where the selected model should be saved before downloading.
+            </p>
+          </div>
+
+          <div class="download-grid">
+            <label class="field">
+              <span>Download source</span>
+              <a id="sourceLink" class="source-link" href="#" target="_blank" rel="noreferrer">Loading source...</a>
+            </label>
+
+            <label class="field">
+              <span>Download location</span>
+              <input id="downloadPathInput" type="text" spellcheck="false" placeholder="Choose a reusable model path">
+            </label>
+          </div>
+
+          <div class="progress-block">
+            <div class="progress-labels">
+              <strong id="progressHeadline">Download not started</strong>
+              <span id="progressPercent">0%</span>
+            </div>
+            <progress id="downloadProgress" value="0" max="100"></progress>
+            <div class="progress-details">
+              <span id="progressDetail">0 B of unknown total</span>
+              <span id="targetPathDisplay">No target selected yet</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="paddleOptionsPanel" class="options-panel hidden">
+        <article class="download-card">
+          <div class="download-meta">
+            <h2>Paddle Options</h2>
+            <p>PaddleOCR-VL is best suited for structured documents such as PDFs, reports, forms, and mixed-layout pages.</p>
+          </div>
+
+          <div class="options-grid">
+            <fieldset class="option-group">
+              <legend>Markdown style</legend>
+              <label class="choice-pill">
+                <input id="paddleMarkdownPretty" type="radio" name="paddleMarkdownStyle" value="pretty">
+                <span>Pretty Markdown</span>
+              </label>
+              <label class="choice-pill">
+                <input id="paddleMarkdownRaw" type="radio" name="paddleMarkdownStyle" value="raw">
+                <span>Raw Markdown</span>
+              </label>
+            </fieldset>
+
+            <fieldset class="option-group">
+              <legend>PDF structure</legend>
+              <label class="choice-pill">
+                <input id="paddlePdfMerged" type="radio" name="paddlePdfStructure" value="merged">
+                <span>Merged document</span>
+              </label>
+              <label class="choice-pill">
+                <input id="paddlePdfPerPage" type="radio" name="paddlePdfStructure" value="per_page">
+                <span>Per page</span>
+              </label>
+            </fieldset>
+          </div>
+
+          <p class="options-note" id="paddleOptionsNote">
+            These options are saved now and will take effect once the real Paddle pipeline is enabled.
+          </p>
+        </article>
+      </section>
+
+      <section class="note">
+        <p id="feedback">
+          The app is ready. Select a model, download it, load it, then upload a scanned file.
+        </p>
+      </section>
+
+      <section class="workspace">
+        <article class="panel">
+          <header class="panel-header">
+            <h2>Original File</h2>
+            <p id="previewMeta">No file uploaded yet.</p>
+          </header>
+          <div id="previewArea" class="preview empty">
+            <p>PDFs render inline. Images open directly in the preview pane.</p>
+          </div>
+        </article>
+
+        <article class="panel">
+          <header class="panel-header result-header">
+            <div>
+              <h2>Markdown Output</h2>
+              <p id="resultMeta">OCR has not run yet.</p>
+            </div>
+            <div class="result-actions">
+              <label class="output-filename">
+                <span>Save as</span>
+                <input id="outputFilenameInput" type="text" spellcheck="false" placeholder="ocr-output.md">
+              </label>
+              <button id="saveOutputBtn" class="secondary" type="button">Save Markdown</button>
+              <div class="view-toggle">
+                <button id="showMarkdownBtn" class="toggle-button active" type="button">Markdown</button>
+                <button id="showPreviewBtn" class="toggle-button" type="button">Preview</button>
+              </div>
+            </div>
+          </header>
+          <pre id="resultText" class="result empty">Waiting for OCR output.</pre>
+          <div id="resultPreview" class="result markdown-preview empty hidden">
+            <p>Markdown preview will appear here.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <dialog id="downloadConfirmDialog" class="confirm-dialog">
+      <form method="dialog" class="confirm-dialog-content">
+        <p class="eyebrow">Download Confirmation</p>
+        <h2 id="confirmDialogTitle">Confirm Model Download</h2>
+        <p>Please confirm the selected model, source, and destination before the download begins.</p>
+
+        <div class="confirm-list">
+          <div>
+            <span>Model</span>
+            <code id="confirmModel"></code>
+          </div>
+          <div>
+            <span>Source</span>
+            <code id="confirmSource"></code>
+          </div>
+          <div>
+            <span>Save to</span>
+            <code id="confirmPath"></code>
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button id="cancelDownloadBtn" type="button" class="secondary">Cancel</button>
+          <button id="confirmDownloadBtn" type="button" class="primary">Confirm Download</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

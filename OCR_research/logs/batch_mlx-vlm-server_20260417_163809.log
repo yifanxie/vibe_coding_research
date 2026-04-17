@@ -1,0 +1,21 @@
+[batch] Found 2 job(s) in /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/input/batch1
+[batch] Output folder: /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/outputs/paddle_mlx_batch
+[batch] Backend mode: mlx-vlm-server
+[batch] Capturing logs to /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/logs/batch_mlx-vlm-server_20260417_163809.log
+[batch] paddleocr binary: /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/.venv_paddle_apple/bin/paddleocr
+[batch] MLX server URL: http://localhost:8111/
+[batch] MLX api model name: PaddlePaddle/PaddleOCR-VL-1.5
+[batch] pdf_render_scale is ignored in mlx-vlm-server mode because Paddle handles document loading internally.
+[batch] Local MLX server detected; NO_PROXY set to localhost,127.0.0.1,::1
+[job 1/2] Starting vl1.54.png
+[job 1/2] Connecting to mlx_vlm.server at http://localhost:8111/
+[paddlecli 1/2] [33mConnectivity check to the model hoster has been skipped because `PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK` is enabled.[0m
+[paddlecli 1/2] /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/.venv_paddle_apple/lib/python3.11/site-packages/paddle/utils/cpp_extension/extension_utils.py:718: UserWarning: No ccache found. Please be aware that recompiling all source files may be required. You can download and install ccache from: https://github.com/ccache/ccache/blob/master/doc/INSTALL.md
+[paddlecli 1/2]   warnings.warn(warning_message)
+[paddlecli 1/2] [32mCreating model: ('PP-DocLayoutV3', None)[0m
+[paddlecli 1/2] [32mModel files already exist. Using cached files. To redownload, please delete the directory manually: `/Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/.paddlex_cache/official_models/PP-DocLayoutV3`.[0m
+[paddlecli 1/2] [32mCreating model: ('PaddleOCR-VL-1.5-0.9B', None)[0m
+[paddlecli 1/2] /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/.venv_paddle_apple/lib/python3.11/site-packages/paddlex/inference/models/doc_vlm/predictor.py:503: UserWarning: 'mlx-vlm-server' does not support `min_pixels`.
+[paddlecli 1/2]   warnings.warn(
+[paddlecli 1/2] /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/.venv_paddle_apple/lib/python3.11/site-packages/paddlex/inference/models/doc_vlm/predictor.py:516: UserWarning: 'mlx-vlm-server' does not support `max_pixels`.
+[paddlecli 1/2]   warnings.warn(

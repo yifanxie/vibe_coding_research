@@ -1,0 +1,21 @@
+[batch] Found 1 job(s) in /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/tmp_test
+[batch] Output folder: /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/outputs/log_capture_test
+[batch] Backend mode: transformers
+[batch] Capturing logs to /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/logs/batch_transformers_20260417_162725.log
+[batch] Model path: /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/models/PaddleOCR-VL-1.5
+[batch] Device preference: cpu
+[batch] max_new_tokens=192, pdf_render_scale=1.25
+[model] Loading processor
+[model] Trying device=cpu dtype=torch.float32
+[model] Model loaded on cpu in 1.92s
+[batch] Shared model load complete in 1.92s
+[job 1/1] Starting sample.png
+[data] Loading image sample.png
+[data] Loaded 1 page(s) in 0.01s
+[inference] Page 1: preparing inputs
+[inference] Page 1: input prep took 0.02s, generating up to 192 tokens
+[inference] Page 1: generation took 11.98s
+[done] OCR completed in 12.01s
+[job 1/1] Saved /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/outputs/log_capture_test/sample.md in 12.01s
+[summary] Completed batch in 14.05s with 1 success(es) and 0 failure(s)
+[summary] Log file saved to /Users/yifanxie/playground/vibe_writing_experiments/research/OCR_research/logs/batch_transformers_20260417_162725.log

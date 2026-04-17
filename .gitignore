@@ -1,4 +1,70 @@
 
 *.zip
-
 *.json
+
+# Python / local env noise
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+venv/
+
+# Generic large artifacts
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.bin
+*.safetensors
+*.h5
+*.hdf5
+*.npz
+*.npy
+*.parquet
+*.feather
+*.sqlite
+*.db
+*.tar
+*.tar.gz
+*.7z
+
+# OCR_research: ignore generated/large files and folders
+OCR_research/.venv*/
+OCR_research/.paddlex_cache/
+OCR_research/models/
+OCR_research/log/
+OCR_research/outputs/
+OCR_research/data/
+OCR_research/dataset/
+OCR_research/datasets/
+OCR_research/checkpoints/
+OCR_research/runs/
+OCR_research/wandb/
+
+# OCR_research file-type artifacts (mostly large inputs/outputs)
+OCR_research/**/*.pdf
+OCR_research/**/*.png
+OCR_research/**/*.jpg
+OCR_research/**/*.jpeg
+OCR_research/**/*.webp
+OCR_research/**/*.tif
+OCR_research/**/*.tiff
+OCR_research/**/*.bmp
+OCR_research/**/*.gif
+OCR_research/**/*.mp4
+OCR_research/**/*.mov
+OCR_research/**/*.avi
+OCR_research/**/*.txt
+OCR_research/**/*.md
+OCR_research/**/*.csv
+OCR_research/**/*.tsv
+OCR_research/**/*.jsonl
+
+# Keep key docs/config in OCR_research tracked
+!OCR_research/README.md
+!OCR_research/**/*.yaml
+!OCR_research/**/*.yml
+!OCR_research/**/*.py
+!OCR_research/**/*.sh
+
+OCR_research/.conda_paddle_apple/

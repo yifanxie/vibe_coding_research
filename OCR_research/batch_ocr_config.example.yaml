@@ -1,0 +1,5 @@
+max_new_tokens: 768
+pdf_render_scale: 1.25
+task: ocr
+use_doc_orientation_classify: true
+use_doc_unwarping: true
