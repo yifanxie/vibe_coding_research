@@ -55,7 +55,7 @@ OCR_research/**/*.mp4
 OCR_research/**/*.mov
 OCR_research/**/*.avi
 OCR_research/**/*.txt
-OCR_research/**/*.md
+OCR_research/outputs/**/*.md
 OCR_research/**/*.csv
 OCR_research/**/*.tsv
 OCR_research/**/*.jsonl
